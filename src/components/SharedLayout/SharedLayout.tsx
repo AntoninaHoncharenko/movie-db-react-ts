@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { Suspense } from 'react';
 import { Header, Navigation, NavItem } from './SharedLayout.styled';
 
-export const Layout = () => {
+export const Layout: React.FC = () => {
   return (
     <>
       <Header>

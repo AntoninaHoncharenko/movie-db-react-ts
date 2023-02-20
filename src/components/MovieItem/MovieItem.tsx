@@ -1,10 +1,16 @@
 import { NavLink } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { PropTypes } from 'prop-types';
 import { MovieCard, MovieImage, MovieTitle } from './MovieItem.styled';
+import { IMovie } from '../../types/movieType';
 
-export const MovieItem = ({ movie }) => {
-  const location = useLocation();
+import { Location } from 'history';
+
+interface IProps {
+  movie: IMovie;
+}
+
+export const MovieItem: React.FC<IProps> = ({ movie }) => {
+  const location: Location = useLocation();
   const { title, name, id, poster_path } = movie;
 
   return (
@@ -22,13 +28,4 @@ export const MovieItem = ({ movie }) => {
       </NavLink>
     </MovieCard>
   );
-};
-
-MovieItem.propTypes = {
-  movie: PropTypes.shape({
-    title: PropTypes.string,
-    name: PropTypes.string,
-    poster_path: PropTypes.string,
-    id: PropTypes.number,
-  }),
 };

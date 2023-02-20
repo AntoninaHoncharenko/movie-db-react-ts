@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { fetchTrendingMovies } from '../../api';
-import { MovieList } from 'components/MovieList/MovieList';
-import { Loader } from 'components/Loader/Loader';
+import { MovieList } from '../../components/MovieList/MovieList';
+import { Loader } from '../../components/Loader/Loader';
 import { Title } from './Home.styled';
-import { Box } from 'Box';
+import { Box } from '../../Box';
 
-const Home = () => {
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsloading] = useState(false);
+import { IMovie } from '../../types/movieType';
+
+const Home: React.FC = () => {
+  const [movies, setMovies] = useState<IMovie[]>([]);
+  const [isLoading, setIsloading] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchMovies() {

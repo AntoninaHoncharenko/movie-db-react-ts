@@ -1,7 +1,7 @@
 import { Outlet, useParams, useLocation } from 'react-router-dom';
 import { useState, useEffect, Suspense } from 'react';
 import { fetchMovieDetails } from '../../api';
-import { Loader } from 'components/Loader/Loader';
+import { Loader } from '../../components/Loader/Loader';
 import { Box } from '../../Box';
 import { BsBoxArrowLeft } from 'react-icons/bs';
 import {
@@ -15,30 +15,45 @@ import {
   Link,
 } from './MovieDetails.styled';
 
-const MovieDetails = () => {
-  const { movieId } = useParams();
-  const [movie, setMovie] = useState([]);
-  const [isLoading, setIsloading] = useState(false);
-  const location = useLocation();
+import { IMovieDetails } from '../../types/movieDetailsType';
+
+interface ILocation {
+  pathname: string;
+  search: string;
+  hash: string;
+  state: {
+    from: string;
+  };
+  key: string;
+}
+
+const MovieDetails: React.FC = () => {
+  const { movieId } = useParams<string>();
+  const [movie, setMovie] = useState<IMovieDetails | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const location: ILocation = useLocation();
 
   useEffect(() => {
     async function fetchMovie() {
       try {
-        setIsloading(true);
-        const data = await fetchMovieDetails(movieId);
-        setMovie(data);
+        setIsLoading(true);
+
+        if (movieId) {
+          const data = await fetchMovieDetails(movieId);
+          setMovie(data);
+        }
       } catch (error) {
         console.log(error);
       } finally {
-        setIsloading(false);
+        setIsLoading(false);
       }
     }
 
     fetchMovie();
   }, [movieId]);
 
-  if (movie.length < 1) {
-    return;
+  if (!movie) {
+    return null;
   }
 
   const { title, release_date, vote_average, overview, poster_path, genres } =
@@ -90,6 +105,7 @@ const MovieDetails = () => {
         </Box>
       </Box>
 
+      {/*  */}
       {/* <Box ml="332px" mb="20px">
         <Link to="cast" state={{ from: location.state?.from } ?? '/'}>
           Cast
@@ -98,6 +114,7 @@ const MovieDetails = () => {
           Reviews
         </Link>
       </Box> */}
+      {/*  */}
 
       <Suspense fallback={null}>
         <Outlet />

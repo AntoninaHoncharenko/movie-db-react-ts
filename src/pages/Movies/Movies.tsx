@@ -1,20 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { SearchForm } from 'components/SearchForm/SearchForm';
+import { SearchForm } from '../../components/SearchForm/SearchForm';
 import { fetchMoviesByName } from '../../api';
-import { MovieList } from 'components/MovieList/MovieList';
-import { Loader } from 'components/Loader/Loader';
+import { MovieList } from '../../components/MovieList/MovieList';
+import { Loader } from '../../components/Loader/Loader';
 import { toast } from 'react-toastify';
 import { Box } from '../../Box';
 
-const Movies = () => {
-  const [movies, setMovies] = useState([]);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [isLoading, setIsloading] = useState(false);
-  const movie = searchParams.get('query') ?? '';
+import { IMovie } from '../../types/movieType';
 
-  const handleSubmit = query => {
-    setSearchParams({ query });
+const Movies: React.FC = () => {
+  const [movies, setMovies] = useState<IMovie[]>([]);
+  const [searchParams, setSearchParams]: [URLSearchParams, Function] =
+    useSearchParams();
+  const [isLoading, setIsloading] = useState<boolean>(false);
+  const movie: string = searchParams.get('query') ?? '';
+
+  const handleSubmit = (query: string) => {
+    const searchQuery: object = query !== '' ? { query } : {};
+    setSearchParams(searchQuery);
   };
 
   useEffect(() => {

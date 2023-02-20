@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { fetchMovieReviews } from '../../api';
-import { Loader } from 'components/Loader/Loader';
+import { Loader } from '../../components/Loader/Loader';
 import {
   ReviewItem,
   ReviewsList,
@@ -10,17 +10,21 @@ import {
   NotFound,
 } from './Reviews.styled';
 
-const Review = () => {
-  const { movieId } = useParams();
-  const [reviews, setReviews] = useState([]);
-  const [isLoading, setIsloading] = useState(false);
+import { IReview } from '../../types/movieReviewType';
+
+const Review: React.FC = () => {
+  const { movieId } = useParams<string>();
+  const [reviews, setReviews] = useState<IReview[]>([]);
+  const [isLoading, setIsloading] = useState<Boolean>(false);
 
   useEffect(() => {
     async function fetchMovieReviewsList() {
       try {
         setIsloading(true);
-        const data = await fetchMovieReviews(movieId);
-        setReviews(data);
+        if (movieId) {
+          const data = await fetchMovieReviews(movieId);
+          setReviews(data);
+        }
       } catch (error) {
         console.log(error);
       } finally {

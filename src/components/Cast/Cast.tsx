@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { fetchMovieCast } from '../../api';
-import { Loader } from 'components/Loader/Loader';
+import { Loader } from '../../components/Loader/Loader';
 import {
   CastList,
   CastItem,
@@ -11,17 +11,21 @@ import {
   NotFound,
 } from './Cast.styled';
 
-const Cast = () => {
-  const { movieId } = useParams();
-  const [cast, setCast] = useState([]);
-  const [isLoading, setIsloading] = useState(false);
+import { ICast } from '../../types/movieCastType';
+
+const Cast: React.FC = () => {
+  const { movieId } = useParams<string>();
+  const [cast, setCast] = useState<ICast[]>([]);
+  const [isLoading, setIsloading] = useState<Boolean>(false);
 
   useEffect(() => {
     async function fetchMovieCastList() {
       try {
         setIsloading(true);
-        const data = await fetchMovieCast(movieId);
-        setCast(data);
+        if (movieId) {
+          const data = await fetchMovieCast(movieId);
+          setCast(data);
+        }
       } catch (error) {
         console.log(error);
       } finally {
